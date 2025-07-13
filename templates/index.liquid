@@ -1,258 +1,287 @@
-<!-- ShopWeekly Tennessee Homepage Template -->
+<!-- ShopWeekly Premium Animated Homepage -->
 
-<!-- Hero Section -->
-<section class="hero-section">
-  <div class="container">
-    <h1 class="hero-title fade-in-up">Digital Resources for Small-Town Tennessee Families</h1>
-    <p class="hero-subtitle fade-in-up">Practical guides, planners, and templates designed specifically for families in communities like Covington, TN. Budget-friendly resources that help you thrive right where you are.</p>
-    <a href="/collections/all" class="hero-cta fade-in-up">Shop Family Resources</a>
-    
-    <div class="trust-elements fade-in-up">
-      <div class="trust-element">30-Day Money-Back Guarantee</div>
-      <div class="trust-element">Instant Digital Download</div>
-      <div class="trust-element">Lifetime Access</div>
-    </div>
-  </div>
-</section>
-
-<!-- Featured Products Section -->
-<section class="featured-products" style="padding: 4rem 0; background: #f9fafb;">
-  <div class="container">
-    <h2 style="text-align: center; font-size: 2.5rem; font-weight: 800; color: var(--tennessee-blue); margin-bottom: 1rem;">Featured Digital Products</h2>
-    <p style="text-align: center; color: var(--text-light); margin-bottom: 3rem; font-size: 1.1rem;">Handcrafted resources designed specifically for Tennessee small-town families</p>
+<section id="products" class="products-section animate-on-scroll">
+  <div class="page-width">
+    <h2 class="section-title">Featured Digital Products</h2>
+    <p class="section-subtitle">Handcrafted resources designed specifically for Tennessee small-town families</p>
     
     <div class="products-grid">
-      <!-- Product 1: Small Town Business Startup Guide -->
-      <div class="product-card fade-in-up">
-        <div class="sale-badge">SALE</div>
-        <h3 class="product-title">Small Town Business Startup Guide</h3>
-        <div class="product-price">
-          $15.00
-          <span class="original-price">$25.00</span>
+      {% for product in collections.all.products limit: 6 %}
+        <div class="product-card animate-on-scroll" style="animation-delay: {{ forloop.index | times: 0.1 }}s;">
+          <div class="product-image">
+            {% if product.compare_at_price > product.price %}
+              <div class="sale-badge">SALE</div>
+            {% endif %}
+            
+            {% if product.featured_image %}
+              <img src="{{ product.featured_image | image_url: width: 400 }}" 
+                   alt="{{ product.featured_image.alt | escape }}"
+                   loading="lazy"
+                   style="width: 100%; height: 100%; object-fit: cover;">
+            {% else %}
+              <div style="background: linear-gradient(135deg, #1e3a8a, #16a34a); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+                📚
+              </div>
+            {% endif %}
+          </div>
+          
+          <div class="product-content">
+            <h3 class="product-title">{{ product.title }}</h3>
+            
+            <div class="product-price">
+              {{ product.price | money }}
+              {% if product.compare_at_price > product.price %}
+                <span class="original-price">{{ product.compare_at_price | money }}</span>
+              {% endif %}
+            </div>
+            
+            <p class="product-description">
+              {{ product.description | strip_html | truncate: 120 }}
+            </p>
+            
+            {% if product.metafields.custom.features %}
+              <ul class="product-features">
+                {% assign features = product.metafields.custom.features | split: '|' %}
+                {% for feature in features limit: 4 %}
+                  <li>{{ feature }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <ul class="product-features">
+                <li>Instant digital download</li>
+                <li>Printable PDF format</li>
+                <li>Tennessee-specific content</li>
+                <li>Money-back guarantee</li>
+              </ul>
+            {% endif %}
+            
+            <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="product-form">
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <button type="submit" class="product-button" 
+                      {% unless product.available %}disabled{% endunless %}>
+                {% if product.available %}
+                  Add to Cart - {{ product.price | money }}
+                {% else %}
+                  Sold Out
+                {% endif %}
+              </button>
+            </form>
+          </div>
         </div>
-        <p class="product-description">Complete roadmap for starting and growing a successful business in small communities like Covington, TN. Includes local marketing strategies and Tennessee business registration info.</p>
-        <ul class="product-features">
-          <li>40-page comprehensive guide</li>
-          <li>Tennessee business registration process</li>
-          <li>Local marketing strategies</li>
-          <li>Funding options for rural businesses</li>
-        </ul>
-        <a href="/products/small-town-business-startup-guide" class="btn-primary">View Details</a>
-      </div>
-
-      <!-- Product 2: Family Budget Planner -->
-      <div class="product-card fade-in-up">
-        <div class="sale-badge">SALE</div>
-        <h3 class="product-title">Family Budget Planner for Small Towns</h3>
-        <div class="product-price">
-          $8.00
-          <span class="original-price">$15.00</span>
+      {% else %}
+        <!-- Fallback products if no products exist -->
+        <div class="product-card animate-on-scroll">
+          <div class="product-image">
+            <div class="sale-badge">SALE</div>
+            <div style="background: linear-gradient(135deg, #1e3a8a, #16a34a); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+              📈
+            </div>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title">Small Town Business Startup Guide</h3>
+            <div class="product-price">
+              $15.00 <span class="original-price">$25.00</span>
+            </div>
+            <p class="product-description">
+              Complete roadmap for starting and growing a successful business in small communities like Covington, TN. Includes local marketing strategies and Tennessee business registration info.
+            </p>
+            <ul class="product-features">
+              <li>40-page comprehensive guide</li>
+              <li>Tennessee business registration process</li>
+              <li>Local marketing strategies</li>
+              <li>Funding options for rural businesses</li>
+            </ul>
+            <button class="product-button">Add to Cart - $15.00</button>
+          </div>
         </div>
-        <p class="product-description">Take control of your family's finances with this practical budget planning kit designed for families earning $40-60k annually in small towns.</p>
-        <ul class="product-features">
-          <li>20-page printable budget kit</li>
-          <li>Monthly budget templates</li>
-          <li>Expense tracking sheets</li>
-          <li>Emergency fund planners</li>
-        </ul>
-        <a href="/products/family-budget-planner-for-small-towns" class="btn-primary">View Details</a>
-      </div>
 
-      <!-- Product 3: Free Family Activities -->
-      <div class="product-card fade-in-up">
-        <h3 class="product-title">50 Free Family Activities in Small Towns</h3>
-        <div class="product-price">$7.00</div>
-        <p class="product-description">Discover amazing family activities using the resources already available in your small town community. Perfect for budget-conscious families.</p>
-        <ul class="product-features">
-          <li>50+ creative activity ideas</li>
-          <li>Outdoor adventures using local parks</li>
-          <li>Home-based creative projects</li>
-          <li>Community engagement activities</li>
-        </ul>
-        <a href="/products/50-free-family-activities-in-small-towns" class="btn-primary">View Details</a>
-      </div>
-
-      <!-- Product 4: Home Garden Planning Kit -->
-      <div class="product-card fade-in-up">
-        <div class="sale-badge">SALE</div>
-        <h3 class="product-title">Home Garden Planning Kit</h3>
-        <div class="product-price">
-          $12.00
-          <span class="original-price">$20.00</span>
+        <div class="product-card animate-on-scroll" style="animation-delay: 0.1s;">
+          <div class="product-image">
+            <div class="sale-badge">SALE</div>
+            <div style="background: linear-gradient(135deg, #ea580c, #f59e0b); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+              💰
+            </div>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title">Family Budget Planner for Small Towns</h3>
+            <div class="product-price">
+              $8.00 <span class="original-price">$15.00</span>
+            </div>
+            <p class="product-description">
+              Take control of your family's finances with this practical budget planning kit designed for families earning $40-60k annually in small towns.
+            </p>
+            <ul class="product-features">
+              <li>20-page printable budget kit</li>
+              <li>Monthly budget templates</li>
+              <li>Expense tracking sheets</li>
+              <li>Emergency fund planners</li>
+            </ul>
+            <button class="product-button">Add to Cart - $8.00</button>
+          </div>
         </div>
-        <p class="product-description">Everything you need to plan, plant, and harvest a successful home garden in Tennessee's climate. Includes Tennessee-specific planting calendar.</p>
-        <ul class="product-features">
-          <li>Garden layout templates</li>
-          <li>Tennessee planting calendar</li>
-          <li>Harvest tracking sheets</li>
-          <li>Companion planting charts</li>
-        </ul>
-        <a href="/products/home-garden-planning-kit" class="btn-primary">View Details</a>
-      </div>
 
-      <!-- Product 5: Social Media Templates -->
-      <div class="product-card fade-in-up">
-        <div class="sale-badge">SALE</div>
-        <h3 class="product-title">Small Business Social Media Templates</h3>
-        <div class="product-price">
-          $10.00
-          <span class="original-price">$18.00</span>
+        <div class="product-card animate-on-scroll" style="animation-delay: 0.2s;">
+          <div class="product-image">
+            <div style="background: linear-gradient(135deg, #16a34a, #22c55e); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+              🎯
+            </div>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title">50 Free Family Activities in Small Towns</h3>
+            <div class="product-price">$7.00</div>
+            <p class="product-description">
+              Discover amazing family activities using the resources already available in your small town community. Perfect for budget-conscious families.
+            </p>
+            <ul class="product-features">
+              <li>50+ creative activity ideas</li>
+              <li>Outdoor adventures using local parks</li>
+              <li>Home-based creative projects</li>
+              <li>Community engagement activities</li>
+            </ul>
+            <button class="product-button">Add to Cart - $7.00</button>
+          </div>
         </div>
-        <p class="product-description">Professional social media graphics designed specifically for small town businesses. 80+ templates ready to customize in Canva.</p>
-        <ul class="product-features">
-          <li>50+ Facebook post templates</li>
-          <li>30+ Instagram story templates</li>
-          <li>Business promotion graphics</li>
-          <li>Easy Canva customization</li>
-        </ul>
-        <a href="/products/small-business-social-media-templates" class="btn-primary">View Details</a>
-      </div>
 
-      <!-- Product 6: Emergency Preparedness Plan -->
-      <div class="product-card fade-in-up">
-        <div class="sale-badge">SALE</div>
-        <h3 class="product-title">Family Emergency Preparedness Plan</h3>
-        <div class="product-price">
-          $9.00
-          <span class="original-price">$15.00</span>
+        <div class="product-card animate-on-scroll" style="animation-delay: 0.3s;">
+          <div class="product-image">
+            <div class="sale-badge">SALE</div>
+            <div style="background: linear-gradient(135deg, #059669, #10b981); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+              🌱
+            </div>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title">Home Garden Planning Kit</h3>
+            <div class="product-price">
+              $12.00 <span class="original-price">$20.00</span>
+            </div>
+            <p class="product-description">
+              Everything you need to plan, plant, and harvest a successful home garden in Tennessee's climate. Includes Tennessee-specific planting calendar.
+            </p>
+            <ul class="product-features">
+              <li>Garden layout templates</li>
+              <li>Tennessee planting calendar</li>
+              <li>Harvest tracking sheets</li>
+              <li>Companion planting charts</li>
+            </ul>
+            <button class="product-button">Add to Cart - $12.00</button>
+          </div>
         </div>
-        <p class="product-description">Protect your family with this comprehensive emergency planning guide designed for small town families. Be prepared for any situation.</p>
-        <ul class="product-features">
-          <li>Emergency contact templates</li>
-          <li>Supply checklists</li>
-          <li>Evacuation planning</li>
-          <li>Rural emergency considerations</li>
-        </ul>
-        <a href="/products/family-emergency-preparedness-plan" class="btn-primary">View Details</a>
-      </div>
+
+        <div class="product-card animate-on-scroll" style="animation-delay: 0.4s;">
+          <div class="product-image">
+            <div class="sale-badge">SALE</div>
+            <div style="background: linear-gradient(135deg, #7c3aed, #a855f7); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+              📱
+            </div>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title">Small Business Social Media Templates</h3>
+            <div class="product-price">
+              $10.00 <span class="original-price">$18.00</span>
+            </div>
+            <p class="product-description">
+              Professional social media graphics designed specifically for small town businesses. 80+ templates ready to customize in Canva.
+            </p>
+            <ul class="product-features">
+              <li>50+ Facebook post templates</li>
+              <li>30+ Instagram story templates</li>
+              <li>Business promotion graphics</li>
+              <li>Easy Canva customization</li>
+            </ul>
+            <button class="product-button">Add to Cart - $10.00</button>
+          </div>
+        </div>
+
+        <div class="product-card animate-on-scroll" style="animation-delay: 0.5s;">
+          <div class="product-image">
+            <div class="sale-badge">SALE</div>
+            <div style="background: linear-gradient(135deg, #dc2626, #ef4444); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+              🚨
+            </div>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title">Family Emergency Preparedness Plan</h3>
+            <div class="product-price">
+              $9.00 <span class="original-price">$15.00</span>
+            </div>
+            <p class="product-description">
+              Protect your family with this comprehensive emergency planning guide designed for small town families. Be prepared for any situation.
+            </p>
+            <ul class="product-features">
+              <li>Emergency contact templates</li>
+              <li>Supply checklists</li>
+              <li>Evacuation planning</li>
+              <li>Rural emergency considerations</li>
+            </ul>
+            <button class="product-button">Add to Cart - $9.00</button>
+          </div>
+        </div>
+      {% endfor %}
     </div>
   </div>
 </section>
 
-<!-- Tennessee Section -->
-<section class="tennessee-section">
-  <div class="container">
-    <h2>Made for Small-Town Tennessee</h2>
-    <p>We understand the unique joys and challenges of small-town life. Our digital products are specifically designed for families and entrepreneurs in communities like Covington, TN - places where neighbors know each other, local businesses matter, and every dollar counts.</p>
-    <div style="display: flex; gap: 2rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
-      <div style="text-align: center;">
-        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏘️</div>
-        <div style="font-weight: 600;">Small-Town Values</div>
-        <div style="opacity: 0.8; font-size: 0.9rem;">Community-focused resources</div>
-      </div>
-      <div style="text-align: center;">
-        <div style="font-size: 2rem; margin-bottom: 0.5rem;">💰</div>
-        <div style="font-weight: 600;">Budget-Friendly</div>
-        <div style="opacity: 0.8; font-size: 0.9rem;">Affordable for every family</div>
-      </div>
-      <div style="text-align: center;">
-        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📱</div>
-        <div style="font-weight: 600;">Instant Access</div>
-        <div style="opacity: 0.8; font-size: 0.9rem;">Download immediately</div>
-      </div>
-    </div>
-    <a href="/pages/about" class="hero-cta" style="margin-top: 2rem;">Learn Our Story</a>
-  </div>
-</section>
-
-<!-- Customer Testimonials -->
-<section style="padding: 4rem 0; background: white;">
-  <div class="container">
-    <h2 style="text-align: center; font-size: 2.5rem; font-weight: 800; color: var(--tennessee-blue); margin-bottom: 3rem;">What Tennessee Families Are Saying</h2>
+<!-- Newsletter Signup Section -->
+<section class="newsletter-section animate-on-scroll" style="padding: 4rem 2rem; background: linear-gradient(135deg, #fef7ed 0%, #ffffff 100%); text-align: center;">
+  <div class="page-width">
+    <h2 style="font-size: 2rem; color: #1e3a8a; margin-bottom: 1rem;">Stay Connected with ShopWeekly</h2>
+    <p style="color: #6b7280; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+      Get the latest Tennessee family resources, budget tips, and small-town business advice delivered to your inbox.
+    </p>
     
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-      <div style="background: var(--tennessee-cream); padding: 2rem; border-radius: 15px; text-align: center;">
-        <div style="font-size: 1.5rem; margin-bottom: 1rem;">⭐⭐⭐⭐⭐</div>
-        <p style="font-style: italic; margin-bottom: 1rem; color: var(--text-dark);">"This budget planner helped us save $200 a month! Perfect for our small-town income."</p>
-        <div style="font-weight: 600; color: var(--tennessee-blue);">- Sarah M., Covington</div>
-      </div>
-      
-      <div style="background: var(--tennessee-cream); padding: 2rem; border-radius: 15px; text-align: center;">
-        <div style="font-size: 1.5rem; margin-bottom: 1rem;">⭐⭐⭐⭐⭐</div>
-        <p style="font-style: italic; margin-bottom: 1rem; color: var(--text-dark);">"The business startup guide was exactly what I needed to open my bakery. Local marketing tips were gold!"</p>
-        <div style="font-weight: 600; color: var(--tennessee-blue);">- Mike R., Small Business Owner</div>
-      </div>
-      
-      <div style="background: var(--tennessee-cream); padding: 2rem; border-radius: 15px; text-align: center;">
-        <div style="font-size: 1.5rem; margin-bottom: 1rem;">⭐⭐⭐⭐⭐</div>
-        <p style="font-style: italic; margin-bottom: 1rem; color: var(--text-dark);">"My kids love the activity ideas! We've tried 20+ activities and they're all hits."</p>
-        <div style="font-weight: 600; color: var(--tennessee-blue);">- Jennifer L., Mom of 3</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Newsletter Signup -->
-<section style="padding: 4rem 0; background: linear-gradient(135deg, var(--tennessee-blue) 0%, var(--tennessee-dark-blue) 100%); color: white;">
-  <div class="container" style="text-align: center;">
-    <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;">Stay Connected with ShopWeekly</h2>
-    <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Get exclusive discounts, new product announcements, and free resources delivered to your inbox. Join 500+ Tennessee families!</p>
-    
-    <form action="/contact#contact_form" method="post" style="display: flex; gap: 1rem; justify-content: center; max-width: 400px; margin: 0 auto;">
-      <input type="hidden" name="form_type" value="customer">
-      <input type="hidden" name="utf8" value="✓">
-      <input type="email" name="contact[email]" placeholder="Enter your email" required style="flex: 1; padding: 1rem; border: none; border-radius: 25px; font-size: 1rem;">
-      <button type="submit" style="background: var(--tennessee-orange); color: white; padding: 1rem 2rem; border: none; border-radius: 25px; font-weight: 600; cursor: pointer; white-space: nowrap;">Join Now</button>
+    <form class="newsletter-form" style="display: flex; gap: 1rem; max-width: 400px; margin: 0 auto; flex-wrap: wrap;">
+      <input type="email" 
+             placeholder="Enter your email address" 
+             style="flex: 1; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; min-width: 250px;">
+      <button type="submit" 
+              style="background: linear-gradient(45deg, #ea580c, #f59e0b); color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: transform 0.3s ease;">
+        Join Now
+      </button>
     </form>
-    
-    <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 1rem;">No spam, unsubscribe anytime. We respect your privacy.</p>
   </div>
 </section>
 
 <style>
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
+  .newsletter-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(234, 88, 12, 0.3);
   }
   
   @media (max-width: 768px) {
-    .products-grid {
-      grid-template-columns: 1fr;
+    .newsletter-form {
+      flex-direction: column;
     }
     
-    .hero-title {
-      font-size: 2rem;
-    }
-    
-    .hero-subtitle {
-      font-size: 1rem;
-    }
-    
-    .tennessee-section h2 {
-      font-size: 2rem;
-    }
-    
-    form {
-      flex-direction: column !important;
-    }
-    
-    form input,
-    form button {
-      width: 100% !important;
+    .newsletter-form input {
+      min-width: 100%;
     }
   }
 </style>
 
 <script>
-// Add fade-in animation on scroll
-document.addEventListener('DOMContentLoaded', function() {
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('fade-in-up');
-      }
-    });
-  }, observerOptions);
-
-  document.querySelectorAll('.product-card').forEach(card => {
-    observer.observe(card);
+  // Add newsletter form functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const newsletterForm = document.querySelector('.newsletter-form');
+    if (newsletterForm) {
+      newsletterForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = this.querySelector('input[type="email"]').value;
+        
+        if (email) {
+          // Show success message
+          const button = this.querySelector('button');
+          const originalText = button.textContent;
+          button.textContent = 'Subscribed! ✓';
+          button.style.background = '#16a34a';
+          
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.style.background = 'linear-gradient(45deg, #ea580c, #f59e0b)';
+            this.querySelector('input').value = '';
+          }, 3000);
+        }
+      });
+    }
   });
-});
 </script>
 
