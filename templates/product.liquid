@@ -1,0 +1,334 @@
+<!-- ShopWeekly Tennessee Product Page -->
+<div style="padding: 2rem 0;">
+  <div class="container">
+    
+    <!-- Breadcrumb -->
+    <nav style="margin-bottom: 2rem; color: var(--text-light); font-size: 0.9rem;">
+      <a href="/" style="color: var(--tennessee-blue); text-decoration: none;">Home</a> > 
+      <a href="/collections/all" style="color: var(--tennessee-blue); text-decoration: none;">Products</a> > 
+      <span>{{ product.title }}</span>
+    </nav>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
+      
+      <!-- Product Image -->
+      <div>
+        {% if product.featured_image %}
+          <img src="{{ product.featured_image | img_url: '600x600' }}" alt="{{ product.title }}" style="width: 100%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        {% else %}
+          <div style="width: 100%; height: 400px; background: linear-gradient(135deg, var(--tennessee-cream) 0%, #ffffff 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: var(--tennessee-blue);">
+            📄
+          </div>
+        {% endif %}
+        
+        <!-- Additional Product Images -->
+        {% if product.images.size > 1 %}
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            {% for image in product.images limit: 4 %}
+              <img src="{{ image | img_url: '150x150' }}" alt="{{ product.title }}" style="width: 100%; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: border-color 0.3s ease;" onclick="changeMainImage(this.src.replace('150x150', '600x600'))">
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+      
+      <!-- Product Details -->
+      <div>
+        <h1 style="font-size: 2.5rem; font-weight: 800; color: var(--tennessee-blue); margin-bottom: 1rem; line-height: 1.2;">{{ product.title }}</h1>
+        
+        <!-- Price -->
+        <div style="margin-bottom: 2rem;">
+          <span style="font-size: 2.5rem; font-weight: 800; color: var(--tennessee-orange);">
+            ${{ product.price | money_without_currency }}
+          </span>
+          {% if product.compare_at_price > product.price %}
+            <span style="font-size: 1.5rem; color: var(--text-light); text-decoration: line-through; margin-left: 1rem;">
+              ${{ product.compare_at_price | money_without_currency }}
+            </span>
+            <div style="margin-top: 0.5rem;">
+              <span style="background: var(--tennessee-orange); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 1rem; font-weight: 600;">
+                SAVE ${{ product.compare_at_price | minus: product.price | money_without_currency }}
+              </span>
+            </div>
+          {% endif %}
+        </div>
+        
+        <!-- Short Description -->
+        <div style="color: var(--text-dark); margin-bottom: 2rem; line-height: 1.7; font-size: 1.1rem;">
+          {{ product.description | truncate: 200 }}
+        </div>
+        
+        <!-- What's Included -->
+        <div style="background: var(--tennessee-cream); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+          <h3 style="color: var(--tennessee-blue); margin-bottom: 1rem; font-weight: 700; font-size: 1.3rem;">What's Included:</h3>
+          <ul style="list-style: none; padding: 0; margin: 0;">
+            <li style="padding: 0.5rem 0; color: var(--text-dark); display: flex; align-items: center;">
+              <span style="color: var(--tennessee-orange); font-weight: bold; margin-right: 0.75rem; font-size: 1.1rem;">✓</span>
+              Instant Digital Download
+            </li>
+            <li style="padding: 0.5rem 0; color: var(--text-dark); display: flex; align-items: center;">
+              <span style="color: var(--tennessee-orange); font-weight: bold; margin-right: 0.75rem; font-size: 1.1rem;">✓</span>
+              Designed for Tennessee Families
+            </li>
+            <li style="padding: 0.5rem 0; color: var(--text-dark); display: flex; align-items: center;">
+              <span style="color: var(--tennessee-orange); font-weight: bold; margin-right: 0.75rem; font-size: 1.1rem;">✓</span>
+              30-Day Money-Back Guarantee
+            </li>
+            <li style="padding: 0.5rem 0; color: var(--text-dark); display: flex; align-items: center;">
+              <span style="color: var(--tennessee-orange); font-weight: bold; margin-right: 0.75rem; font-size: 1.1rem;">✓</span>
+              Lifetime Access & Updates
+            </li>
+            <li style="padding: 0.5rem 0; color: var(--text-dark); display: flex; align-items: center;">
+              <span style="color: var(--tennessee-orange); font-weight: bold; margin-right: 0.75rem; font-size: 1.1rem;">✓</span>
+              Customer Support
+            </li>
+            {% if product.title contains 'Business' %}
+            <li style="padding: 0.5rem 0; color: var(--text-dark); display: flex; align-items: center;">
+              <span style="color: var(--tennessee-orange); font-weight: bold; margin-right: 0.75rem; font-size: 1.1rem;">✓</span>
+              Tennessee Business Registration Info
+            </li>
+            {% endif %}
+            {% if product.title contains 'Garden' %}
+            <li style="padding: 0.5rem 0; color: var(--text-dark); display: flex; align-items: center;">
+              <span style="color: var(--tennessee-orange); font-weight: bold; margin-right: 0.75rem; font-size: 1.1rem;">✓</span>
+              Tennessee Climate Zone Information
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+        
+        <!-- Add to Cart Form -->
+        <form action="/cart/add" method="post" enctype="multipart/form-data" id="product-form">
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          
+          <!-- Quantity Selector -->
+          <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-dark);">Quantity:</label>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <button type="button" onclick="changeQuantity(-1)" style="background: var(--tennessee-blue); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem;">-</button>
+              <input type="number" name="quantity" value="1" min="1" id="quantity" style="width: 60px; text-align: center; padding: 0.5rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;">
+              <button type="button" onclick="changeQuantity(1)" style="background: var(--tennessee-blue); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem;">+</button>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn-primary" style="width: 100%; padding: 1.25rem; font-size: 1.2rem; margin-bottom: 1rem; position: relative;">
+            <span id="add-to-cart-text">Add to Cart - ${{ product.price | money_without_currency }}</span>
+            <span id="adding-text" style="display: none;">Adding to Cart...</span>
+          </button>
+        </form>
+        
+        <!-- Buy Now Button -->
+        <button onclick="buyNow()" style="width: 100%; padding: 1.25rem; font-size: 1.2rem; background: var(--tennessee-orange); color: white; border: none; border-radius: 25px; font-weight: 600; cursor: pointer; margin-bottom: 2rem;">
+          Buy Now - Instant Download
+        </button>
+        
+        <!-- Trust Elements -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+          <div style="text-align: center; padding: 1rem; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🛡️</div>
+            <div style="font-weight: 600; color: var(--text-dark); font-size: 0.9rem;">Secure Checkout</div>
+          </div>
+          <div style="text-align: center; padding: 1rem; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">⚡</div>
+            <div style="font-weight: 600; color: var(--text-dark); font-size: 0.9rem;">Instant Download</div>
+          </div>
+          <div style="text-align: center; padding: 1rem; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">💎</div>
+            <div style="font-weight: 600; color: var(--text-dark); font-size: 0.9rem;">Lifetime Access</div>
+          </div>
+        </div>
+        
+        <!-- Payment Methods -->
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <p style="color: var(--text-light); margin-bottom: 1rem; font-size: 0.9rem;">We accept:</p>
+          <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+            <span style="padding: 0.5rem 1rem; background: #f3f4f6; border-radius: 8px; font-size: 0.8rem; color: var(--text-dark);">💳 Visa</span>
+            <span style="padding: 0.5rem 1rem; background: #f3f4f6; border-radius: 8px; font-size: 0.8rem; color: var(--text-dark);">💳 Mastercard</span>
+            <span style="padding: 0.5rem 1rem; background: #f3f4f6; border-radius: 8px; font-size: 0.8rem; color: var(--text-dark);">🅿️ PayPal</span>
+            <span style="padding: 0.5rem 1rem; background: #f3f4f6; border-radius: 8px; font-size: 0.8rem; color: var(--text-dark);">📱 Apple Pay</span>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+    <!-- Full Product Description -->
+    <div style="margin-top: 4rem;">
+      <h2 style="font-size: 2rem; font-weight: 800; color: var(--tennessee-blue); margin-bottom: 2rem; text-align: center;">Product Details</h2>
+      <div style="background: white; padding: 3rem; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); line-height: 1.8; color: var(--text-dark);">
+        {{ product.description }}
+      </div>
+    </div>
+    
+    <!-- Customer Reviews -->
+    <div style="margin-top: 4rem;">
+      <h2 style="font-size: 2rem; font-weight: 800; color: var(--tennessee-blue); margin-bottom: 2rem; text-align: center;">Customer Reviews</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+        <div style="background: var(--tennessee-cream); padding: 2rem; border-radius: 15px;">
+          <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+            <div style="font-size: 1.2rem; margin-right: 1rem;">⭐⭐⭐⭐⭐</div>
+            <div style="font-weight: 600; color: var(--tennessee-blue);">Sarah M.</div>
+          </div>
+          <p style="color: var(--text-dark); font-style: italic;">"Exactly what I needed for my small town family. The quality is outstanding and the price is perfect for our budget."</p>
+        </div>
+        
+        <div style="background: var(--tennessee-cream); padding: 2rem; border-radius: 15px;">
+          <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+            <div style="font-size: 1.2rem; margin-right: 1rem;">⭐⭐⭐⭐⭐</div>
+            <div style="font-weight: 600; color: var(--tennessee-blue);">Mike R.</div>
+          </div>
+          <p style="color: var(--text-dark); font-style: italic;">"Great resource! The Tennessee-specific information made all the difference. Highly recommend to other small town families."</p>
+        </div>
+        
+        <div style="background: var(--tennessee-cream); padding: 2rem; border-radius: 15px;">
+          <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+            <div style="font-size: 1.2rem; margin-right: 1rem;">⭐⭐⭐⭐⭐</div>
+            <div style="font-weight: 600; color: var(--tennessee-blue);">Jennifer L.</div>
+          </div>
+          <p style="color: var(--text-dark); font-style: italic;">"Download was instant and the content is top-notch. Worth every penny and more!"</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Related Products -->
+    <div style="margin-top: 4rem;">
+      <h2 style="font-size: 2rem; font-weight: 800; color: var(--tennessee-blue); margin-bottom: 2rem; text-align: center;">You Might Also Like</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+        {% assign related_products = collections.all.products | where: 'id', '!=', product.id | limit: 3 %}
+        {% for related_product in related_products %}
+          <div style="background: white; border-radius: 15px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center;">
+            <h3 style="color: var(--tennessee-blue); margin-bottom: 1rem; font-size: 1.1rem;">{{ related_product.title }}</h3>
+            <div style="color: var(--tennessee-orange); font-weight: 800; font-size: 1.3rem; margin-bottom: 1rem;">
+              ${{ related_product.price | money_without_currency }}
+            </div>
+            <a href="{{ related_product.url }}" style="background: var(--tennessee-blue); color: white; padding: 0.75rem 1.5rem; border-radius: 25px; text-decoration: none; font-weight: 600; display: inline-block;">View Product</a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<style>
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    div[style*="grid-template-columns: 1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+      gap: 2rem !important;
+    }
+    
+    h1 {
+      font-size: 2rem !important;
+    }
+    
+    .trust-elements {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
+<script>
+// Change main product image
+function changeMainImage(newSrc) {
+  const mainImage = document.querySelector('img[alt="{{ product.title }}"]');
+  if (mainImage) {
+    mainImage.src = newSrc;
+  }
+}
+
+// Quantity controls
+function changeQuantity(change) {
+  const quantityInput = document.getElementById('quantity');
+  const currentValue = parseInt(quantityInput.value);
+  const newValue = Math.max(1, currentValue + change);
+  quantityInput.value = newValue;
+  
+  // Update add to cart button text
+  const price = {{ product.price | money_without_currency }};
+  const total = (price * newValue).toFixed(2);
+  document.getElementById('add-to-cart-text').textContent = `Add to Cart - $${total}`;
+}
+
+// Buy now functionality
+function buyNow() {
+  const form = document.getElementById('product-form');
+  const formData = new FormData(form);
+  
+  fetch('/cart/add.js', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    window.location.href = '/cart';
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
+
+// Add to cart with feedback
+document.getElementById('product-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const addButton = this.querySelector('button[type="submit"]');
+  const addText = document.getElementById('add-to-cart-text');
+  const addingText = document.getElementById('adding-text');
+  
+  // Show loading state
+  addText.style.display = 'none';
+  addingText.style.display = 'inline';
+  addButton.disabled = true;
+  
+  const formData = new FormData(this);
+  
+  fetch('/cart/add.js', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Show success state
+    addingText.textContent = 'Added to Cart!';
+    addButton.style.background = 'var(--tennessee-orange)';
+    
+    // Reset after 2 seconds
+    setTimeout(() => {
+      addText.style.display = 'inline';
+      addingText.style.display = 'none';
+      addButton.disabled = false;
+      addButton.style.background = '';
+      addingText.textContent = 'Adding to Cart...';
+    }, 2000);
+    
+    // Update cart count if exists
+    updateCartCount();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    addText.style.display = 'inline';
+    addingText.style.display = 'none';
+    addButton.disabled = false;
+  });
+});
+
+// Update cart count
+function updateCartCount() {
+  fetch('/cart.js')
+    .then(response => response.json())
+    .then(cart => {
+      const cartLinks = document.querySelectorAll('a[href="/cart"]');
+      cartLinks.forEach(link => {
+        if (link.textContent.includes('Cart')) {
+          link.innerHTML = `🛒 Cart <span style="background: var(--tennessee-orange); color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; margin-left: 0.5rem;">${cart.item_count}</span>`;
+        }
+      });
+    });
+}
+</script>
+

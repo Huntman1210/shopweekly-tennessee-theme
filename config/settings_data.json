@@ -1,0 +1,56 @@
+{
+  "current": {
+    "colors_solid_button_labels": "#FFFFFF",
+    "colors_accent_1": "#1e3a8a",
+    "colors_accent_2": "#ea580c", 
+    "colors_text": "#1f2937",
+    "colors_outline_button_labels": "#1e3a8a",
+    "colors_background_1": "#FFFFFF",
+    "colors_background_2": "#fef7ed",
+    "type_header_font": "inter_n4",
+    "heading_scale": 100,
+    "type_body_font": "inter_n4", 
+    "body_scale": 100,
+    "page_width": 1200,
+    "spacing_sections": 36,
+    "spacing_grid_horizontal": 8,
+    "spacing_grid_vertical": 8,
+    "card_text_alignment": "left",
+    "card_color_scheme": "background-2",
+    "card_border_thickness": 0,
+    "card_border_opacity": 10,
+    "card_corner_radius": 15,
+    "card_shadow_opacity": 8,
+    "card_shadow_horizontal_offset": 0,
+    "card_shadow_vertical_offset": 4,
+    "card_shadow_blur": 20,
+    "buttons_border_thickness": 1,
+    "buttons_border_opacity": 100,
+    "buttons_radius": 25,
+    "buttons_shadow_opacity": 0,
+    "buttons_shadow_horizontal_offset": 0,
+    "buttons_shadow_vertical_offset": 4,
+    "buttons_shadow_blur": 5,
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "text": "🎉 New Tennessee Digital Products Available! Free shipping on all downloads.",
+          "color_scheme": "accent-2"
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "footer_text": "Made with ❤️ for Tennessee families"
+        }
+      }
+    }
+  }
+}
+

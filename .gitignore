@@ -1,0 +1,25 @@
+# Shopify Theme Development
+.DS_Store
+.vscode/
+.idea/
+*.log
+node_modules/
+.env
+.env.local
+
+# Shopify CLI
+.shopify/
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+
+# Build files
+dist/
+build/
+

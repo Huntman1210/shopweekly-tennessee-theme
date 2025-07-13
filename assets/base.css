@@ -1,0 +1,284 @@
+/* Base styles for ShopWeekly Tennessee Theme */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: 0.06rem;
+  line-height: 1.8;
+  font-family: var(--font-body-family);
+  font-style: var(--font-body-style);
+  font-weight: var(--font-body-weight);
+  color: rgb(var(--color-base-text));
+  background-color: rgb(var(--color-base-background-1));
+}
+
+@media screen and (min-width: 750px) {
+  body {
+    font-size: 1.6rem;
+  }
+}
+
+/* Skip to content link */
+.skip-to-content-link {
+  position: absolute;
+  z-index: 9999;
+  top: -40px;
+  left: 6px;
+  color: white;
+  background-color: rgb(var(--color-base-text));
+  padding: 8px;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 1.4rem;
+}
+
+.skip-to-content-link:focus {
+  top: 6px;
+}
+
+/* Visually hidden */
+.visually-hidden {
+  position: absolute !important;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  word-wrap: normal !important;
+}
+
+/* Focus styles */
+.focus-none {
+  outline: none;
+}
+
+.focus-inset:focus-visible {
+  outline: 0.2rem solid rgba(var(--color-base-text), 0.5);
+  outline-offset: 0.3rem;
+  box-shadow: 0 0 0 0.3rem rgb(var(--color-base-background-1)),
+    0 0 0.5rem 0.4rem rgba(var(--color-base-text), 0.3);
+}
+
+/* Gradients */
+.gradient {
+  background: rgb(var(--color-base-background-1));
+}
+
+/* Page width */
+.page-width {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media screen and (min-width: 750px) {
+  .page-width {
+    padding: 0 5rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .page-width {
+    padding: 0 var(--page-width-margin);
+  }
+}
+
+/* Buttons */
+.button {
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  padding: 1.5rem 3rem;
+  text-decoration: none;
+  background-color: rgba(var(--color-base-accent-1), var(--alpha-button-background));
+  color: rgb(var(--color-base-solid-button-labels));
+  min-width: calc(12rem + var(--buttons-border-width) * 2);
+  min-height: calc(4.4rem + var(--buttons-border-width) * 2);
+  transition: box-shadow var(--duration-short) ease;
+  appearance: none;
+  border-radius: var(--buttons-radius);
+  position: relative;
+  font-size: 1.4rem;
+  letter-spacing: 0.1rem;
+  line-height: calc(1 + 0.2 / var(--font-body-scale));
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  border-radius: var(--buttons-radius-outset);
+  box-shadow: var(--buttons-border-offset) var(--buttons-border-offset) 0 var(--buttons-border-width) rgba(var(--color-base-outline-button-labels), var(--buttons-border-opacity)),
+    var(--buttons-shadow-horizontal-offset) var(--buttons-shadow-vertical-offset) var(--buttons-shadow-blur-radius) rgba(var(--color-shadow), var(--buttons-shadow-opacity));
+}
+
+.button:hover::before {
+  box-shadow: var(--buttons-border-offset) var(--buttons-border-offset) 0 var(--buttons-border-width) rgba(var(--color-base-outline-button-labels), var(--buttons-border-opacity)),
+    var(--buttons-shadow-horizontal-offset) var(--buttons-shadow-vertical-offset) var(--buttons-shadow-blur-radius) rgba(var(--color-shadow), var(--buttons-shadow-opacity));
+}
+
+.button--secondary {
+  color: rgb(var(--color-base-outline-button-labels));
+  background-color: transparent;
+}
+
+.button--secondary::before {
+  box-shadow: 0 0 0 var(--buttons-border-width) rgba(var(--color-base-outline-button-labels), var(--buttons-border-opacity)),
+    var(--buttons-shadow-horizontal-offset) var(--buttons-shadow-vertical-offset) var(--buttons-shadow-blur-radius) rgba(var(--color-shadow), var(--buttons-shadow-opacity));
+}
+
+.button--secondary:hover {
+  color: rgb(var(--color-base-solid-button-labels));
+  background-color: rgb(var(--color-base-outline-button-labels));
+}
+
+/* Links */
+.link {
+  cursor: pointer;
+  display: inline-block;
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+  color: rgba(var(--color-base-text), 0.85);
+  text-underline-offset: 0.3rem;
+  text-decoration-thickness: 0.1rem;
+  transition: color var(--duration-short) ease,
+    text-decoration-color var(--duration-short) ease;
+}
+
+.link:hover {
+  color: rgb(var(--color-base-text));
+  text-decoration-color: rgba(var(--color-base-text), 0.75);
+}
+
+.link--text {
+  color: rgb(var(--color-base-text));
+  text-decoration: underline;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading-family);
+  font-style: var(--font-heading-style);
+  font-weight: var(--font-heading-weight);
+  letter-spacing: calc(var(--font-heading-scale) * 0.06rem);
+  color: rgb(var(--color-base-text));
+  line-height: calc(1 + 0.3 / max(1, var(--font-heading-scale)));
+  word-break: break-word;
+}
+
+.h0 {
+  font-size: calc(var(--font-heading-scale) * 4rem);
+}
+
+.h1 {
+  font-size: calc(var(--font-heading-scale) * 3rem);
+}
+
+.h2 {
+  font-size: calc(var(--font-heading-scale) * 2.4rem);
+}
+
+.h3 {
+  font-size: calc(var(--font-heading-scale) * 2rem);
+}
+
+.h4 {
+  font-size: calc(var(--font-heading-scale) * 1.8rem);
+}
+
+.h5 {
+  font-size: calc(var(--font-heading-scale) * 1.6rem);
+}
+
+.h6 {
+  font-size: calc(var(--font-heading-scale) * 1.4rem);
+}
+
+@media screen and (min-width: 750px) {
+  .h0 {
+    font-size: calc(var(--font-heading-scale) * 5.2rem);
+  }
+
+  .h1 {
+    font-size: calc(var(--font-heading-scale) * 4rem);
+  }
+
+  .h2 {
+    font-size: calc(var(--font-heading-scale) * 3.2rem);
+  }
+}
+
+/* Content for layout */
+.content-for-layout {
+  flex: 1 0 auto;
+}
+
+/* Color schemes */
+.color-accent-1 {
+  color: rgb(var(--color-base-solid-button-labels));
+  background-color: rgb(var(--color-base-accent-1));
+}
+
+.color-accent-2 {
+  color: rgb(var(--color-base-solid-button-labels));
+  background-color: rgb(var(--color-base-accent-2));
+}
+
+.color-background-1 {
+  color: rgb(var(--color-base-text));
+  background-color: rgb(var(--color-base-background-1));
+}
+
+.color-background-2 {
+  color: rgb(var(--color-base-text));
+  background-color: rgb(var(--color-base-background-2));
+}
+
+.color-inverse {
+  color: rgb(var(--color-base-background-1));
+  background-color: rgb(var(--color-base-text));
+}
+
+/* Responsive utilities */
+@media screen and (max-width: 749px) {
+  .small-hide {
+    display: none !important;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .medium-hide {
+    display: none !important;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .large-up-hide {
+    display: none !important;
+  }
+}
+

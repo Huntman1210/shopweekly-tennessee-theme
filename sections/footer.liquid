@@ -1,0 +1,107 @@
+<footer class="site-footer">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+      
+      <!-- About Section -->
+      <div>
+        <h3 style="color: white; margin-bottom: 1rem; font-weight: 700;">ShopWeekly</h3>
+        <p style="opacity: 0.9; line-height: 1.6; margin-bottom: 1rem;">Digital resources designed specifically for small-town Tennessee families. Practical guides, planners, and templates that help you thrive right where you are.</p>
+        <div style="display: flex; gap: 1rem;">
+          <a href="#" style="color: white; font-size: 1.5rem;">📘</a>
+          <a href="#" style="color: white; font-size: 1.5rem;">📷</a>
+          <a href="#" style="color: white; font-size: 1.5rem;">🐦</a>
+        </div>
+      </div>
+      
+      <!-- Quick Links -->
+      <div>
+        <h4 style="color: white; margin-bottom: 1rem; font-weight: 600;">Quick Links</h4>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="margin-bottom: 0.5rem;"><a href="/" style="color: white; opacity: 0.9; text-decoration: none;">Home</a></li>
+          <li style="margin-bottom: 0.5rem;"><a href="/collections/all" style="color: white; opacity: 0.9; text-decoration: none;">All Products</a></li>
+          <li style="margin-bottom: 0.5rem;"><a href="/collections/family-resources" style="color: white; opacity: 0.9; text-decoration: none;">Family Resources</a></li>
+          <li style="margin-bottom: 0.5rem;"><a href="/collections/small-business-tools" style="color: white; opacity: 0.9; text-decoration: none;">Business Tools</a></li>
+          <li style="margin-bottom: 0.5rem;"><a href="/pages/about" style="color: white; opacity: 0.9; text-decoration: none;">About Us</a></li>
+        </ul>
+      </div>
+      
+      <!-- Customer Support -->
+      <div>
+        <h4 style="color: white; margin-bottom: 1rem; font-weight: 600;">Customer Support</h4>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="margin-bottom: 0.5rem;"><a href="/pages/contact" style="color: white; opacity: 0.9; text-decoration: none;">Contact Us</a></li>
+          <li style="margin-bottom: 0.5rem;"><a href="/pages/faq" style="color: white; opacity: 0.9; text-decoration: none;">FAQ</a></li>
+          <li style="margin-bottom: 0.5rem;"><a href="/policies/shipping-policy" style="color: white; opacity: 0.9; text-decoration: none;">Shipping Info</a></li>
+          <li style="margin-bottom: 0.5rem;"><a href="/policies/refund-policy" style="color: white; opacity: 0.9; text-decoration: none;">Returns</a></li>
+          <li style="margin-bottom: 0.5rem;"><a href="/policies/privacy-policy" style="color: white; opacity: 0.9; text-decoration: none;">Privacy Policy</a></li>
+        </ul>
+      </div>
+      
+      <!-- Newsletter -->
+      <div>
+        <h4 style="color: white; margin-bottom: 1rem; font-weight: 600;">Stay Connected</h4>
+        <p style="opacity: 0.9; margin-bottom: 1rem; font-size: 0.9rem;">Get exclusive discounts and new product updates.</p>
+        <form action="/contact#contact_form" method="post" style="display: flex; gap: 0.5rem;">
+          <input type="hidden" name="form_type" value="customer">
+          <input type="hidden" name="utf8" value="✓">
+          <input type="email" name="contact[email]" placeholder="Your email" required style="flex: 1; padding: 0.75rem; border: none; border-radius: 5px; font-size: 0.9rem;">
+          <button type="submit" style="background: var(--tennessee-orange); color: white; padding: 0.75rem 1rem; border: none; border-radius: 5px; font-weight: 600; cursor: pointer;">Join</button>
+        </form>
+      </div>
+      
+    </div>
+    
+    <!-- Bottom Bar -->
+    <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 2rem; text-align: center;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <p style="margin: 0; opacity: 0.8; font-size: 0.9rem;">
+          © {{ 'now' | date: '%Y' }} ShopWeekly. Made with ❤️ for Tennessee families.
+        </p>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a href="/policies/terms-of-service" style="color: white; opacity: 0.8; text-decoration: none; font-size: 0.9rem;">Terms</a>
+          <a href="/policies/privacy-policy" style="color: white; opacity: 0.8; text-decoration: none; font-size: 0.9rem;">Privacy</a>
+          <a href="/policies/refund-policy" style="color: white; opacity: 0.8; text-decoration: none; font-size: 0.9rem;">Refunds</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    .site-footer div[style*="display: flex; justify-content: space-between"] {
+      flex-direction: column !important;
+      text-align: center !important;
+    }
+    
+    .site-footer form {
+      flex-direction: column !important;
+    }
+    
+    .site-footer input,
+    .site-footer button {
+      width: 100% !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "footer_text",
+      "label": "Footer Text",
+      "default": "Made with ❤️ for Tennessee families"
+    }
+  ]
+}
+{% endschema %}
+
